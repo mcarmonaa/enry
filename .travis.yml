@@ -1,34 +1,28 @@
 language: go
-
 go:
-  - 1.8
-  - tip
-
+- 1.8
+- tip
 matrix:
   allow_failures:
-    - go: tip
-
+  - go: tip
 install:
-  - rm -rf $GOPATH/src/gopkg.in/src-d
-  - mkdir -p $GOPATH/src/gopkg.in/src-d
-  - ln -s $PWD $GOPATH/src/gopkg.in/src-d/enry.v1
-  - cd $GOPATH/src/gopkg.in/src-d/enry.v1
-  - go get -v -t ./...
-
+- rm -rf $GOPATH/src/gopkg.in/src-d
+- mkdir -p $GOPATH/src/gopkg.in/src-d
+- ln -s $PWD $GOPATH/src/gopkg.in/src-d/enry.v1
+- cd $GOPATH/src/gopkg.in/src-d/enry.v1
+- go get -v -t ./...
 script:
-  - make test-coverage
-
+- make test-coverage
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
+- bash <(curl -s https://codecov.io/bash)
 before_deploy:
-  - make packages
-
+- make packages
 deploy:
   provider: releases
-  api_key: $GITHUB_TOKEN 
+  skip_cleanup: true
+  api_key:
+    secure: OK34w9Mj4hg6VvwyPZlsSq5TKGz+pNkNaVHCT3/BLNsDqtwwAPgBxaIdPy2h1PJm+/Rhhr8zWsyhm0L0hTDOJDkof1icyaLquw5o/14Ka0Znf3ycVIDr7cyJ7a1x5VA5B67lt5phxpiwI1OBlLhfY0t/65n/kJpMHFu3FjcnXm4W50fMnO7VsKGJ67zW00i6nQqNCB/P4dGOwxjyZ5dmp/JA7CD2w2M+po+jPGPf01jo9N/zVxZAjpEDokaEu0yXgshsrjZ2gO+OMNOd18zlzoxgBUmth+UxysuX7Bpk6TkYO25ccJSJmO1nBRagf8RR/zVFqotDqcrrbs2QPxXVXbM28HG5JvJYsOtkwbZRm4UKCaZBPSCdQ67BeWjX3Asi10CDG7OOgMzbQ6ScnZzSNe5SRP8FU5Gsd39c9AW6FjzrS7Ys2m/Dwv0nqE1dGenwxAek4t3fsUpSWbjN7vvQS+VVU9QdQM1LtCTTk23hzoUQzVOoq5id9ve2yUbvx/xdRDEUoYRhf4CLj04gYpFu7v36niM3wxvIkUhW5G0By0F8HKaoYdbjyw4f7Qz7fQ5R3/vN+lFa/F5BzZHgiPhstnrCBCd2NM+3f4GHNOHPQtu4uoVu4knaCMIfd/PjoInO+vb5igVvf/tnuCI+iwCxMrDtz6V44j8ygF5051NQOu0=
   file_glob: true
   file: build/*.tar.gz
-  skip_cleanup: true
   on:
     tags: true
